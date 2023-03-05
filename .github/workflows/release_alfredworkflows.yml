@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@latest
 
       - name: Zip everything up
         run: |
@@ -20,7 +20,7 @@ jobs:
           zip -r woodyk_alfredworkflows.zip alfredworkflows
 
       - name: Delete previous release
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@latest
         with:
           tag_name: latest 
           delete_release: true
@@ -40,7 +40,7 @@ jobs:
 
       - name: Upload Release Asset
         id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
