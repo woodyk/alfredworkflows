@@ -11,8 +11,10 @@ jobs:
     outputs:
       matrix: ${{ steps.get-workflows.outputs.matrix }}
     steps:
-      - name: Get alfred workflows
+      - name: Checkout code 
         uses: actions/checkout@v2
+
+      - name: Get workflow names 
         id: get-workflows
         run: echo "::set-output name=matrix::$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')"
 
