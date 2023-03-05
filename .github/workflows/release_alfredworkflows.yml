@@ -1,9 +1,9 @@
 on:
   push:
-    #paths:
-    #  - '**.alfredworkflow'
-    branches:
-      - "main"
+    paths:
+      - '**.alfredworkflow'
+    #branches:
+    #  - "main"
 
 name: Upload and release asset
 
@@ -82,7 +82,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          #upload_url: ${{ steps.create_release.outputs.upload_url }}
           upload_url: ${{ needs.release-zip.outputs.release_url }}
           asset_path: ./${{ matrix.file }} 
           asset_name: ${{ matrix.file }} 
