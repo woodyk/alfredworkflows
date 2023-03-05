@@ -12,15 +12,15 @@ permissions: write-all
 jobs:
   get-workflows:
   #runs-on: ubuntu-latest
-  outputs:
-    matrix: ${{ steps.get-workflows.outputs.matrix }}
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    outputs:
+      matrix: ${{ steps.get-workflows.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Get workflow names
-      id: get-workflows
-      run: echo "matrix=$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+      - name: Get workflow names
+        id: get-workflows
+        run: echo "matrix=$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   release-zip:
     #runs-on: ubuntu-latest
