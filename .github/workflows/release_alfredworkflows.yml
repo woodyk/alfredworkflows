@@ -21,6 +21,10 @@ jobs:
   release:
     needs: list-workflows
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
     strategy:
       matrix:
         file: ${{ fromJson(needs.list-workflows.outputs.matrix) }}
@@ -31,7 +35,7 @@ jobs:
 
       - name: Create release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
