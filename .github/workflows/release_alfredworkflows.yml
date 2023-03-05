@@ -2,8 +2,8 @@ on:
   push:
     paths:
       - '**.alfredworkflow'
-    #branches:
-    #  - "main"
+    branches:
+      - "main"
 
 name: Upload and release asset
 
@@ -46,23 +46,23 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+#      - name: Checkout code
+#        uses: actions/checkout@v3
 
-      - name: Zip everything up
-        run: |
-          cd ..
-          zip -r alfredworkflows.zip alfredworkflows
+#      - name: Zip everything up
+#        run: |
+#          cd ..
+#          zip -r alfredworkflows.zip alfredworkflows
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ../alfredworkflows.zip 
-          asset_name: alfredworkflows.zip 
-          asset_content_type: application/zip
+#      - name: Upload Release Asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ../alfredworkflows.zip 
+#          asset_name: alfredworkflows.zip 
+#          asset_content_type: application/zip
 
   release-workflows:
     runs-on: ubuntu-latest
