@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file: ${{ list-workflows.outputs.matrix }}
+        file: ${{ needs.list-workflows.outputs.matrix }}
 
     steps:
       - name: Checkout code
