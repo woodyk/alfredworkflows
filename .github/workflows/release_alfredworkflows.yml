@@ -11,7 +11,7 @@ permissions: write-all
 
 jobs:
   get-workflows:
-  #runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.get-workflows.outputs.matrix }}
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: echo "matrix=$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   release-zip:
-    #runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     outputs:
       release_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
@@ -46,8 +46,8 @@ jobs:
           draft: false
           prerelease: false
 
-      #- name: Checkout code
-      #  uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Zip everything up
         run: |
@@ -65,7 +65,7 @@ jobs:
           asset_content_type: application/zip
 
   release-workflows:
-    #runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     needs:
       - get-workflows
       - release-zip
@@ -73,8 +73,8 @@ jobs:
       matrix:
         file: ${{ fromJson(needs.get-workflows.outputs.matrix) }}
     steps:
-      #- name: Checkout code
-      #  uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Upload Release Asset
         id: upload-release-asset 
