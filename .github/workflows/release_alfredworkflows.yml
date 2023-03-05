@@ -14,6 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Zip everything up
+        run: |
+          cd ..
+          zip -r woodyk_alfredworkflows.zip alfredworkflows
+
       - name: Delete previous release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
@@ -21,11 +26,6 @@ jobs:
           delete_release: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Zip everything up
-        run: |
-          cd ..
-          zip -r woodyk_alfredworkflows.zip alfredworkflows
 
       - name: Create release
         id: create_release
