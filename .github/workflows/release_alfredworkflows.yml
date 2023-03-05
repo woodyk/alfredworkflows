@@ -1,7 +1,9 @@
 on:
   push:
-    branches:
-      - "main"
+    paths:
+      - '**.alfredworkflow'
+#    branches:
+#      - "main"
 
 name: Upload and release asset
 
@@ -17,7 +19,7 @@ jobs:
       - name: Zip everything up
         run: |
           cd ..
-          zip -r woodyk_alfredworkflows.zip alfredworkflows
+          zip -r alfredworkflows.zip alfredworkflows
 
       - name: Delete previous release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
@@ -45,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ../woodyk_alfredworkflows.zip 
-          asset_name: woodyk_alfredworkflows.zip 
+          asset_path: ../alfredworkflows.zip 
+          asset_name: alfredworkflows.zip 
           asset_content_type: application/zip
 
