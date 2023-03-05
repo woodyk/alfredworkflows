@@ -1,7 +1,7 @@
 on:
   push:
-    paths:
-      - '**.alfredworkflow'
+    #paths:
+    #  - '**.alfredworkflow'
     branches:
       - "main"
 
