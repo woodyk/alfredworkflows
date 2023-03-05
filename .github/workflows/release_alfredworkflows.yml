@@ -3,28 +3,13 @@ on:
     branches:
       - "main"
 
-name: Upload Release Asset
+name: Upload and release asset
 
 jobs:
-  list-workflows:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.get-workflows.outputs.matrix }}
-    steps:
-      - name: Checkout code 
-        uses: actions/checkout@v3
-
-      - name: Get workflow names 
-        id: get-workflows
-        run: echo "matrix=$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
-
   release:
     needs: list-workflows
     runs-on: ubuntu-latest
     permissions: write-all
-    strategy:
-      matrix:
-        file: ${{ fromJson(needs.list-workflows.outputs.matrix) }}
 
     steps:
       - name: Checkout code
@@ -33,30 +18,34 @@ jobs:
       - name: Delete previous release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
-          tag_name: ${{ matrix.file }}
+          tag_name: latest 
           delete_release: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ matrix.file }} 
-          release_name: ${{ matrix.file }} Release 
-          draft: false
-          prerelease: false
+      - name: Zip everything up
+        run: |
+          pwd
 
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ matrix.file }} 
-          asset_name: ${{ matrix.file }} 
-          asset_content_type: application/zip
+#      - name: Create release
+#        id: create_release
+#        uses: actions/create-release@latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: latest 
+#          release_name: Alfred Workflows 
+#          draft: false
+#          prerelease: false
+
+#      - name: Upload Release Asset
+#        id: upload-release-asset 
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ./woodyk_alfredworkflows.zip 
+#          asset_name: woodyk_alfredworkflows 
+#          asset_content_type: application/zip
 
