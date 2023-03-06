@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
 
-name: Upload and release asset
+name: Upload and release assets
 
 permissions: write-all
 
