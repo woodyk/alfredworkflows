@@ -22,7 +22,7 @@ jobs:
         id: get-workflows
         run: echo "matrix=$(ls *.alfredworkflow | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
-  release-zip:
+  create-release:
     runs-on: ubuntu-latest
     outputs:
       release_url: ${{ steps.create_release.outputs.upload_url }}
@@ -46,6 +46,9 @@ jobs:
           draft: false
           prerelease: false
 
+#  add-zip-release:
+#    runs-on: ubuntu-latest
+#    steps:
 #      - name: Checkout code
 #        uses: actions/checkout@v3
 
@@ -68,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - get-workflows
-      - release-zip
+      - create-release 
     strategy:
       matrix:
         file: ${{ fromJson(needs.get-workflows.outputs.matrix) }}
@@ -82,7 +85,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.release-zip.outputs.release_url }}
+          upload_url: ${{ needs.create-release.outputs.release_url }}
           asset_path: ./${{ matrix.file }} 
           asset_name: ${{ matrix.file }} 
           asset_content_type: application/zip
