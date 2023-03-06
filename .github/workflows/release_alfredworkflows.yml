@@ -1,7 +1,7 @@
 on:
   push:
-    paths:
-      - '**.alfredworkflow'
+    #paths:
+    #  - '**.alfredworkflow'
     branches:
       - "main"
 
@@ -25,7 +25,7 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     outputs:
-      release_url: ${{ steps.create_release.outputs.upload_url }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Delete previous release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
@@ -45,6 +45,9 @@ jobs:
           release_name: Alfred Workflows 
           draft: false
           prerelease: false
+
+      - name: Check URL
+        run: echo "${{ steps.create_release.outputs.upload_url }}"
 
 #  add-zip-release:
 #    runs-on: ubuntu-latest
@@ -75,6 +78,7 @@ jobs:
     strategy:
       matrix:
         file: ${{ fromJson(needs.get-workflows.outputs.matrix) }}
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -85,7 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create-release.outputs.release_url }}
+          upload_url: ${{ matrix.upload_url }}
           asset_path: ./${{ matrix.file }} 
           asset_name: ${{ matrix.file }} 
           asset_content_type: application/zip
