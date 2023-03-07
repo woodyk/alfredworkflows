@@ -1,7 +1,7 @@
 # A collection of custom / modified Alfred workflows
 
 
-## SSHing 
+## Commanding 
 
 ## Hidden Files
 
